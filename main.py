@@ -72,18 +72,18 @@ async def zakaz(_:app, message: types.Message):
 async def one_month(_:app, message: types.Message):
     await app.send_mesage(messsage.chat.id, "📩 | Введите вашу почту")
     
-    mail = await listen_message(client, messsage.chat.id, timeout=None)
+    mail = await listen_message(app, messsage.chat.id, timeout=None)
     await mail.reply(f'Почта: {mail.text}')
 	
 @app.on_callback_query()
 async def button(bot, update):
       cb_data = update.data
-      if "zakaz" in cb_data:
-        await update.message.delete()
-        await zakaz(bot, update.message)
-      elif "one_month" in cb_data:
+      if "one_month" in cb_data:
         await update.message.delete()
         await one_month(bot, update.message)
+      elif "zakaz" in cb_data:
+        await update.message.delete()
+        await zakaz(bot, update.message)
       elif "start" in cb_data:
         await update.message.delete()
         await start(bot, update.message)
