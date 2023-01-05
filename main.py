@@ -68,15 +68,20 @@ async def zakaz(_:app, message: types.Message):
                                     ]]
                             ),)                  
                         
-@app.on_message(filters.command("one_month"))
-async def one_month(_:app, message: types.Message):
-    button = InlineKeyboardMarkup([[InlineKeyboardButton('Отменить', callback_data = 'stop')]])
-    question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту.', reply_markup = button)
-        response = await app.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout=None)
-        if response:
-	    await response.reply(f'Ваша почта: {response.text}')
-        else:
-	    await message.reply('Okay cancelled question!')
+@app.on_message(filters.regex(r'one_month'))
+async def one_month(app, message):
+	button = InlineKeyboardMarkup([[InlineKeyboardButton('❌ | отмена', callback_data = 'stop')]])
+	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
+	# A nice flow of conversation
+	try:
+		response = await app.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout = 60)
+	except asyncio.TimeoutError:
+		await message.reply('Ошибка | Прошло больше минуты.')
+	else:
+		if response:
+			await response.reply(f'Ваша почта: {response.text}')
+		else:
+			await message.reply('Okay cancelled question!')
 	
 @app.on_callback_query()
 async def button(bot, update):
