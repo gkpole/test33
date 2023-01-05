@@ -70,12 +70,15 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.command("one_month"))
 async def one_month(_:app, message: types.Message):
-    await app.send_message(
-        chat_id=message.chat.id,
-         text="📩 | Введите вашу почту:")
-    
-    mail = await listen_message(_:app, messsage.chat.id, timeout=None)
-    await mail.reply(f'Почта: {mail.text}')
+    button = InlineKeyboardMarkup([[InlineKeyboardButton('Отменить', callback_data = 'stop')]])
+	question = await client.send_message(message.chat.id, '✉️ | Введите вашу почту.', reply_markup = button)
+	# A nice flow of conversation
+	try:
+		response = await client.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout=Noneq
+		if response:
+			await response.reply(f'Ваша почта: {response.text}')
+		else:
+			await message.reply('Okay cancelled question!')
 	
 @app.on_callback_query()
 async def button(bot, update):
