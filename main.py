@@ -1,6 +1,5 @@
 from pyrogram import Client, filters, types, idle
-from convopyro import Conversation
-from convopyro import listen_message
+from pyrogram_patch.fsm import StateFilter, State
 from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery)
 import asyncio
 import pyromod
@@ -68,21 +67,16 @@ async def zakaz(_:app, message: types.Message):
                                     ]]
                             ),)                  
                         
-@app.on_message(filters.regex(r'one_month'))
-async def one_month(app, message):
-	button = InlineKeyboardMarkup([[InlineKeyboardButton('❌ | отмена', callback_data = 'stop')]])
-	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
-	# A nice flow of conversation
-            await message.reply(message.text)
-	try:
-		response = await app.listen.Message(filters.text, id = filters.user(message.chat.id), timeout = 60)
-	except asyncio.TimeoutError:
-		await message.reply('Ошибка | Прошло больше минуты.')
-	else:
-		if response:
-			await response.reply(f'Ваша почта: {response.text}')
-		else:
-			await message.reply('Okay cancelled question!')
+@app.on_message(filters.private & StateFilter()) # the same as StateFilter("*"), catches all states
+async def one_month(app: Client, message, state: State):
+    if message.text == 'my_data':
+        await app.send_message(message.chat.id, 'enter your weight')
+        await state.set_state(Parameters.weight)
+
+        
+@app.on_message(filters.private & StateFilter(Parameters.weight))
+async def one_monthh(client: Client, message, state: State):
+    await state.set_data({'weight': message.text})
 
 @app.on_callback_query()
 async def button(bot, update):
