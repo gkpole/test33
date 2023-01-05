@@ -75,10 +75,10 @@ async def one_month(_:app, message: types.Message):
 	# A nice flow of conversation
 	try:
 		response = await client.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout=Noneq
-		if response:
-			await response.reply(f'Ваша почта: {response.text}')
-		else:
-			await message.reply('Okay cancelled question!')
+	if response:
+		await response.reply(f'Ваша почта: {response.text}')
+	else:
+		await message.reply('Okay cancelled question!')
 	
 @app.on_callback_query()
 async def button(bot, update):
