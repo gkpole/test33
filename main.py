@@ -53,23 +53,15 @@ async def zakaz(_:app, message: types.Message):
         chat_id=message.chat.id,
          text=f"""<b>🛡️| Выберете период: </b>""",
                 reply_markup=InlineKeyboardMarkup(
-                                [[
-                                        InlineKeyboardButton(
-                                            "1 месяц", callback_data="one_month"),
+                                 [
+                                [
+                                                                   InlineKeyboardButton('1 месяц', callback_data='one_months')
+                                    ],[
+                                        InlineKeyboardButton('👮 Создатель', url='https://t.me/NoZiss')
+                                    ],[
+                                        InlineKeyboardButton('➕ Добавить в чат➕', url='https://t.me/@StopScamBLBot?startgroup=new'),
                                     ]]
-                                                        [[
-                                        InlineKeyboardButton(
-                                            "3 месяца", callback_data="three_month"),
-                                    ]]
-                                                                                [[
-                                        InlineKeyboardButton(
-                                            "6 месяцев", callback_data="six_month"),
-                                    ]]
-                                                        [[
-                                        InlineKeyboardButton(
-                                            "1 год", callback_data="year"),
-                                    ]]
-                        ),)            
+                            ),)                  
                         
 @app.on_message(filters.command("one_month"))
 async def one_month(_:app, message: types.Message):
