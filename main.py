@@ -42,12 +42,14 @@ async def help(_:app, message: types.Message):
         chat_id=message.chat.id,
          text=f"""<b>🔺 | Контакты тех. помощи </b>""",
              reply_markup=InlineKeyboardMarkup(
-                 [
-                    [
-                         InlineKeyboardButton('*имя контакта*', url='https://t.me/Noziss')
-                     ]]
-                ),)     
-                
+                                [
+                                [
+                                                                   InlineKeyboardButton('🔺 | *контакт*', url='https://t.me/noziss')
+                                    ],[
+                                        InlineKeyboardButton('🔙 | назад', callback_data='start')
+                                   ]]
+                            ),)
+                            
 @app.on_message(filters.command("vpn"))
 async def zakaz(_:app, message: types.Message):
     await app.send_message(
@@ -68,7 +70,7 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.command("one_month"))
 async def one_month(_:app, message: types.Message):
-    await client.send_mesage(messsage.chat.id, "📩 | Введите вашу почту")
+    await app.send_mesage(messsage.chat.id, "📩 | Введите вашу почту")
     
     mail = await listen_message(client, messsage.chat.id, timeout=None)
     await mail.reply(f'Почта: {mail.text}')
