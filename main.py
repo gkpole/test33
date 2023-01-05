@@ -69,7 +69,7 @@ async def zakaz(_:app, message: types.Message):
                             ),)                  
                         
 @app.on_message(filters.regex(r'one_month'))
-async def one_month(app, CallbackQuery, message):
+async def one_month(app, callback_query, message):
 	button = InlineKeyboardMarkup([[InlineKeyboardButton('❌ | отмена', callback_data = 'stop')]])
 	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
 	# A nice flow of conversation
@@ -88,7 +88,7 @@ async def button(bot, update):
       cb_data = update.data
       if "one_month" in cb_data:
         await update.message.delete()
-        await one_month(bot, update.CallbackQuery)
+        await one_month(bot, update.message)
       elif "zakaz" in cb_data:
         await update.message.delete()
         await zakaz(bot, update.message)
