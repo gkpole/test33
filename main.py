@@ -57,23 +57,23 @@ async def zakaz(_:app, message: types.Message):
                 reply_markup=InlineKeyboardMarkup(
                                 [[
                                         InlineKeyboardButton(
-                                            "1 месяц", callback_data="1month"),
+                                            "1 месяц", callback_data="one_month"),
                                     ]]
                                                         [[
                                         InlineKeyboardButton(
-                                            "3 месяца", callback_data="3month"),
+                                            "3 месяца", callback_data="three_month"),
                                     ]]
                                                                                 [[
                                         InlineKeyboardButton(
-                                            "6 месяцев", callback_data="6month"),
+                                            "6 месяцев", callback_data="six_month"),
                                     ]]
                                                         [[
                                         InlineKeyboardButton(
-                                            "1 год", callback_data="1year"),
+                                            "1 год", callback_data="year"),
                                     ]]
                         ),)            
                         
-@app.on_message(filters.command("1month"))
+@app.on_message(filters.command("one_month"))
 async def 1month(_:app, message: types.Message):
     await client.send_mesage(messsage.chat.id, "📩 | Введите вашу почту")
     
@@ -86,8 +86,8 @@ async def button(bot, update):
       if "zakaz" in cb_data:
         await update.message.delete()
         await zakaz(bot, update.message)
-      elif "1month" in cb_data:
+      elif "one_month" in cb_data:
         await update.message.delete()
-        await 1month(bot, update.message)
+        await one_month(bot, update.message)
 	
 app.run()
