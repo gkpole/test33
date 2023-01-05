@@ -39,7 +39,7 @@ async def start(message: types.Message):
             keyboard2 = types.InlineKeyboardMarkup()
 
             keyboard.add(types.InlineKeyboardButton(text="🔺 | тех. Помощь", callback_data="help"))
-            await message.answer("<b> Здравствуйте!\nМы компания welat VPN </b>", reply_markup=keyboard, keyboard2)
+            await message.answer("<b> Здравствуйте!\nМы компания welat VPN </b>", reply_markup=keyboard)
         else:
             await message.answer('Вы уже отправили заявку!')
             
