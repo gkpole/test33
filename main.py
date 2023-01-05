@@ -27,13 +27,12 @@ async def start(_:app, message: types.Message):
          text=f"""<b>Здравствуйте!
 Мы компания welat VPN </b>""",
             reply_markup=InlineKeyboardMarkup(
+                                 [
                                 [
-                                        InlineKeyboardButton(
-                                            "🛡️ | VPN", callback_data="zakaz"),
-                                    ], [
-                                        InlineKeyboardButton(
-                                            "🔺 | Тех. Помощь", callback_data="help"),
-                                    ]
+                                                                   InlineKeyboardButton('🛡️ | VPN', callback_data='zakaz')
+                                    ],[
+                                        InlineKeyboardButton('👮 Создатель', url='https://t.me/NoZiss')
+                                   ]]
                             ),)
                             
 @app.on_message(filters.command("help"))
