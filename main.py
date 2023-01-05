@@ -70,7 +70,7 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.regex(r'one_month'))
 async def one_month(app, message):
-	await app.send_mesage(CallbackQuery.from_user.id, "What's your name?")
+	await app.send_message(CallbackQuery.from_user.id, "What's your name?")
 
 	answer = await listen_message(app, CallbackQuery.from_user.id, timeout=None)
 	await answer.reply(f'hello {answer.text}')
