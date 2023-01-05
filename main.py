@@ -2,6 +2,7 @@ from pyrogram import Client, filters, types, idle
 from pyrogram_patch.fsm import StateFilter, State
 from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery)
 import asyncio
+from pyrogram_patch import patch
 import pyromod
 
 '''
@@ -18,6 +19,10 @@ api_key = "5485921311:AAFXU90-MQ1O28AkzjwrYwEmeFxX1UaUaWE" # paste your bot toke
 
 with Client("my_account", api_id, api_hash, api_key) as app:
     pass
+patch_manager = patch(app)
+
+# include middleware
+patch_manager.include_middleware(MyMiddleware(*args, **kwargs))
 
 @app.on_message(filters.command("start"))
 async def start(_:app, message: types.Message):
