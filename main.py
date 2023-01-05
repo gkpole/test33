@@ -1,4 +1,6 @@
 from pyrogram import Client, filters, types, idle
+from convopyro import Conversation
+from convopyro import listen_message
 from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton)
 import asyncio
 import pyromod
@@ -17,6 +19,7 @@ api_key = "5485921311:AAFXU90-MQ1O28AkzjwrYwEmeFxX1UaUaWE" # paste your bot toke
 
 with Client("my_account", api_id, api_hash, api_key) as app:
     pass
+Conversation(app)
 
 @app.on_message(filters.command("start"))
 async def start(_:app, message: types.Message):
@@ -67,10 +70,18 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.regex(r'one_month'))
 async def one_month(app, message):
-   chat_id=callback.from_user.id,
-   answer = await app.ask(chat_id, '✉️ | Введите вашу почту:')
-   await answer.request.edit_text("Почта получена!")
-   await answer.reply(f'Ваша почта: {answer.text}', quote=True)
+	button = InlineKeyboardMarkup([[InlineKeyboardButton('❌ | отмена', callback_data = 'stop')]])
+	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
+	# A nice flow of conversation
+	try:
+		response = await app.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout = 60)
+	except asyncio.TimeoutError:
+		await message.reply('Ошибка | Прошло больше минуты.')
+	else:
+		if response:
+			await response.reply(f'Ваша почта: {response.text}')
+		else:
+			await message.reply('Okay cancelled question!')
 	
 @app.on_callback_query()
 async def button(bot, update):
