@@ -1,7 +1,7 @@
 from pyrogram import Client, filters, types, idle
 from convopyro import Conversation
 from convopyro import listen_message
-from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton)
+from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery)
 import asyncio
 import pyromod
 
@@ -74,7 +74,7 @@ async def one_month(app, message):
 	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
 	# A nice flow of conversation
 	try:
-		response = await app.listen.Message(filters.text, id = filters.user(CallbackQuery.message.id), timeout = 60)
+		response = await app.listen.Message(filters.text, id = filters.user(CallbackQuery.from_user.id), timeout = 60)
 	except asyncio.TimeoutError:
 		await message.reply('Ошибка | Прошло больше минуты.')
 	else:
