@@ -74,7 +74,7 @@ async def one_month(_:app, message: types.Message):
         chat_id=message.chat.id,
          text="📩 | Введите вашу почту:")
     
-    mail = await listen_message(app, messsage.chat.id, timeout=None)
+    mail = await listen_message(_:app, messsage.chat.id, timeout=None)
     await mail.reply(f'Почта: {mail.text}')
 	
 @app.on_callback_query()
