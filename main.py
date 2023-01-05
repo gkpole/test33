@@ -5,6 +5,7 @@ import asyncio
 import sqlite3
 import contextlib
 import time
+import pyromod
 
 '''
 How to get api_id and api_hash?
@@ -70,18 +71,9 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.regex(r'one_month'))
 async def one_month(app, message):
-	button = InlineKeyboardMarkup([[InlineKeyboardButton('❌ | отмена', callback_data = 'stop')]])
-	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
-	# A nice flow of conversation
-	try:
-		response = await app.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout = 60)
-	except asyncio.TimeoutError:
-		await message.reply('Ошибка | Прошло больше минуты.')
-	else:
-		if response:
-			await response.reply(f'Ваша почта: {response.text}')
-		else:
-			await message.reply('Okay cancelled question!')
+   answer = await app.ask(chat_id, '*✉️ | Введите вашу почту:*', parse_mode=enums.ParseMode.MARKDOWN)
+   await answer.request.edit_text("Почта получена!")
+   await answer.reply(f'Ваша почта: {answer.text}', quote=True)
 	
 @app.on_callback_query()
 async def button(bot, update):
