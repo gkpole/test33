@@ -73,12 +73,12 @@ async def one_month(_:app, message: types.Message):
     button = InlineKeyboardMarkup([[InlineKeyboardButton('Отменить', callback_data = 'stop')]])
     question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту.', reply_markup = button)
 	# A nice flow of conversation
-    try:
-	response = await app.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout=Noneq
-    if response:
-	await response.reply(f'Ваша почта: {response.text}')
-    else:
-	await message.reply('Okay cancelled question!')
+        try:
+	    response = await app.listen.Message(filters.text, id = filters.user(message.from_user.id), timeout=Noneq
+        if response:
+	    await response.reply(f'Ваша почта: {response.text}')
+        else:
+	    await message.reply('Okay cancelled question!')
 	
 @app.on_callback_query()
 async def button(bot, update):
