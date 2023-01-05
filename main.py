@@ -88,7 +88,7 @@ async def button(bot, update):
       cb_data = update.data
       if "one_month" in cb_data:
         await update.message.delete()
-        await one_month(bot, update.message)
+        await one_month(bot, update.CallbackQuery)
       elif "zakaz" in cb_data:
         await update.message.delete()
         await zakaz(bot, update.message)
