@@ -101,7 +101,7 @@ async def process_message(message: types.Message, state: FSMContext):
 
     keyboard.add(but1, but2)
     await bot.send_message(chat_id=admin_used_id,
-                           text=f'<a href="tg://user?id={message.chat.id}">{message.from_user.first_name}</a> Отправил заявку! Его данные:\nПериод - {db1.get_text1(message.chat.id)}\nПочта - {db1.get_text2(message.chat.id), }
+                           text=f'<a href="tg://user?id={message.chat.id}">{message.from_user.first_name}</a> Отправил заявку! Его данные:\nПериод - {db1.get_text1(message.chat.id), }\nПочта - {db1.get_text2(message.chat.id), }
                            parse_mode='HTML', reply_markup=keyboard)
 
     
