@@ -71,7 +71,7 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.regex(r'one_month'))
 async def one_month(app, message):
-   chat_id=message.chat.id,
+   chat_id=call.chat.id,
    answer = await app.ask(chat_id, '✉️ | Введите вашу почту:')
    await answer.request.edit_text("Почта получена!")
    await answer.reply(f'Ваша почта: {answer.text}', quote=True)
