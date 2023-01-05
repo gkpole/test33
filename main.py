@@ -69,7 +69,7 @@ async def zakaz(_:app, message: types.Message):
                             ),)                  
                         
 @app.on_message(filters.regex(r'one_month'))
-async def one_month(app, callback_query, message):
+async def one_month(app, message):
 	button = InlineKeyboardMarkup([[InlineKeyboardButton('❌ | отмена', callback_data = 'stop')]])
 	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
 	# A nice flow of conversation
