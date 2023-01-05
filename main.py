@@ -1,4 +1,5 @@
 from pyrogram import Client, filters, types, idle
+from convopyro import listen_message
 from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton)
 import asyncio
 import sqlite3
@@ -31,7 +32,7 @@ async def start(_:app, message: types.Message):
                                 [
                                                                    InlineKeyboardButton('🛡️ | VPN', callback_data='zakaz')
                                     ],[
-                                        InlineKeyboardButton('👮 Создатель', url='https://t.me/NoZiss')
+                                        InlineKeyboardButton('🔺 | Тех. помощь', callback_data='help')
                                    ]]
                             ),)
                             
@@ -43,7 +44,7 @@ async def help(_:app, message: types.Message):
              reply_markup=InlineKeyboardMarkup(
                  [
                     [
-                         InlineKeyboardButton('Имя Контакта', url='https://t.me/Noziss')
+                         InlineKeyboardButton('*имя контакта*', url='https://t.me/Noziss')
                      ]]
                 ),)     
                 
@@ -57,9 +58,11 @@ async def zakaz(_:app, message: types.Message):
                                 [
                                                                    InlineKeyboardButton('1 месяц', callback_data='one_months')
                                     ],[
-                                        InlineKeyboardButton('👮 Создатель', url='https://t.me/NoZiss')
+                                        InlineKeyboardButton('3 месяца', callback_data='three_month')
                                     ],[
-                                        InlineKeyboardButton('➕ Добавить в чат➕', url='https://t.me/@StopScamBLBot?startgroup=new'),
+                                        InlineKeyboardButton('6 месяцев', callback_data='six_month')
+                                    ],[
+                                        InlineKeyboardButton('1 год', callback_data='year'),
                                     ]]
                             ),)                  
                         
