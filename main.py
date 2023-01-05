@@ -78,7 +78,7 @@ async def one_month(_:app, message: types.Message):
     await client.send_mesage(messsage.chat.id, "📩 | Введите вашу почту")
     
     mail = await listen_message(client, messsage.chat.id, timeout=None)
-    await mail.reply(f'Пользователь: {user.mention() \nПериод: 1 месяц \nПочта: {mail.text}')
+    await mail.reply(f'Почта: {mail.text}')
 	
 @app.on_callback_query()
 async def button(bot, update):
