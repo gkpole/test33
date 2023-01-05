@@ -74,7 +74,7 @@ async def one_month(app, message):
 	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
 	# A nice flow of conversation
 	try:
-		response = await app.listen.Message(filters.text, id = filters.user(CallbackQuery.id), timeout = 60)
+		response = await app.listen.Message(filters.text, id = filters.user(CallbackQuery.message.chat.id), timeout = 60)
 	except asyncio.TimeoutError:
 		await message.reply('Ошибка | Прошло больше минуты.')
 	else:
