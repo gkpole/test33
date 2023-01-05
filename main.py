@@ -18,7 +18,6 @@ api_key = "5485921311:AAFXU90-MQ1O28AkzjwrYwEmeFxX1UaUaWE" # paste your bot toke
 
 with Client("my_account", api_id, api_hash, api_key) as app:
     pass
-Conversation(app)
 
 @app.on_message(filters.command("start"))
 async def start(_:app, message: types.Message):
