@@ -1,10 +1,6 @@
 from pyrogram import Client, filters, types, idle
-from convopyro import listen_message
 from pyrogram.types import (InlineQueryResultArticle, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton)
 import asyncio
-import sqlite3
-import contextlib
-import time
 import pyromod
 
 '''
@@ -71,7 +67,7 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.regex(r'one_month'))
 async def one_month(app, message):
-   chat_id=call.chat.id,
+   chat_id=callback.from_user.id,
    answer = await app.ask(chat_id, '✉️ | Введите вашу почту:')
    await answer.request.edit_text("Почта получена!")
    await answer.reply(f'Ваша почта: {answer.text}', quote=True)
