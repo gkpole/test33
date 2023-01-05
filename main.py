@@ -84,5 +84,8 @@ async def button(bot, update):
       elif "one_month" in cb_data:
         await update.message.delete()
         await one_month(bot, update.message)
+      elif "start" in cb_data:
+        await update.message.delete()
+        await start(bot, update.message)
 	
 app.run()
