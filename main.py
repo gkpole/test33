@@ -74,7 +74,7 @@ async def zakaz(_:app, message: types.Message):
                         ),)            
                         
 @app.on_message(filters.command("one_month"))
-async def 1month(_:app, message: types.Message):
+async def one_month(_:app, message: types.Message):
     await client.send_mesage(messsage.chat.id, "📩 | Введите вашу почту")
     
     mail = await listen_message(client, messsage.chat.id, timeout=None)
