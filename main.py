@@ -70,10 +70,18 @@ async def zakaz(_:app, message: types.Message):
                         
 @app.on_message(filters.regex(r'one_month'))
 async def one_month(app, CallbackQuery, message):
-    await app.send_message(CallbackQuery.from_user.id, "What's your name?")
-
-    answer = await listen_message(app, CallbackQuery.from_user.id, timeout=None)
-    await answer.reply(f'hello {answer.text}')
+	button = InlineKeyboardMarkup([[InlineKeyboardButton('❌ | отмена', callback_data = 'stop')]])
+	question = await app.send_message(message.chat.id, '✉️ | Введите вашу почту в течение минуты.', reply_markup = button)
+	# A nice flow of conversation
+	try:
+		response = await app.listen.Message(filters.text, id = filters.user(CallbackQuery.from_user.id), timeout = 60)
+	except asyncio.TimeoutError:
+		await message.reply('Ошибка | Прошло больше минуты.')
+	else:
+		if response:
+			await response.reply(f'Ваша почта: {response.text}')
+		else:
+			await message.reply('Okay cancelled question!')
 	
 @app.on_callback_query()
 async def button(bot, update):
