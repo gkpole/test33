@@ -33,7 +33,7 @@ def get_keyboard():
         [
             types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"),
             types.InlineKeyboardButton(text="🔺 | Тех. помощь", callback_data="help")
-        ]
+        ]]
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
 
