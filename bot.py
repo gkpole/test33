@@ -23,32 +23,6 @@ storage = MemoryStorage()
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 logging.basicConfig(level=logging.INFO)
-1
-
-Форум
-Общий раздел
-Программирование
-Python
-Проверка подписки в тг боте
-Тема в разделе Python создана пользователем Delete_L 28 окт 2022. (поднята 31 окт 2022) 384 просмотра
-
-Подписаться на темуПоиск 
-Delete_L Автор темы 28 окт 2022
-166 13 дек 2020
-Видел тут такую тему но там не особо понятно
-
-В этой теме я постараюсь показать как добавить проверку подписки в бот
-
-Код Python:
-from aiogram import Bot, types
-from aiogram.dispatcher import Dispatcher
-from aiogram.utils import executor
-from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-
-token = "token"
-bot = Bot(token=token)
-dp = Dispatcher(bot, storage=MemoryStorage())
 
 my_channel_id = "-1001814890080"
 channel_us = "https://t.me/+k9n54y65zEVmOTFi"
@@ -88,8 +62,8 @@ async def start(message: types.Message):
         if pon == None:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
-            keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/noziss"))
+            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+            keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
             await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
         else:
             keyboard = types.InlineKeyboardMarkup()
@@ -100,7 +74,8 @@ async def start(message: types.Message):
         db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-        keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
+        keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+        keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
         await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="stoimost")
