@@ -38,7 +38,9 @@ async def start(message: types.Message):
             keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
             await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
         else:
-            await message.answer('Вы уже отправили заявку!')
+            keyboard = types.InlineKeyboardMarkup()
+            keyboard.add(types.InlineKeyboardButton(text="Подать ещё заявку", callback_data="zaya"))
+            await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
             
     except:
         db1.add_user(message.chat.id)
