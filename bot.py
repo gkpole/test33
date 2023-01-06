@@ -57,7 +57,6 @@ class Mydialog2(StatesGroup):
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
     if await ch_sub(message.chat.id) == 1:
-    try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
             keyboard = types.InlineKeyboardMarkup()
