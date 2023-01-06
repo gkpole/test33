@@ -77,11 +77,11 @@ async def start(message: types.Message):
             keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
             await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
 
-@dp.callback_query_handler(text="stoimost")
-async def stoimost(call: types.CallbackQuery):
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton(text="Назад", callback_data="zaya"))
-    await call.message.answer(f'Стоимость:n\ 1 месяц (3$)n\3 месяца (9$)n\6 месяцев(18$)n\1 год (30$)', reply_markup=keyboard)
+#@dp.callback_query_handler(text="stoimost")
+#async def stoimost(call: types.CallbackQuery):
+    #keyboard = types.InlineKeyboardMarkup()
+    #keyboard.add(types.InlineKeyboardButton(text="Назад", callback_data="zaya"))
+    #await call.message.answer(f'Стоимость:n\ 1 месяц (3$)n\3 месяца (9$)n\6 месяцев(18$)n\1 год (30$)', reply_markup=keyboard)
 
 
 @dp.callback_query_handler(text="zaya")
