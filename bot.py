@@ -36,8 +36,8 @@ class Mydialog1(StatesGroup):
 class Mydialog2(StatesGroup):
     otvet2 = State()
 
-my_channel_id = "-1001814890080"
-channel_us = "https://t.me/+k9n54y65zEVmOTFi"
+my_channel_id = "ид канала"
+channel_us = "ссылка на канал"
 #если вам нужно меньше или больше каналов то просто убираете или добавляете
 
 def no_sub():
