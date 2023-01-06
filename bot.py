@@ -24,6 +24,58 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 logging.basicConfig(level=logging.INFO)
 
+keyboard = types.InlineKeyboardMarkup(row_width=2)
+subscribe = types.InlineKeyboardButton(text="Подписаться", url="https://t.me/+k9n54y65zEVmOTFi")
+check = types.InlineKeyboardButton(text="Проверить", callback_data="check")
+keyboard.add(subscribe)
+keyboard.add(check)
+#
+menu = types.ReplyKeyboardMarkup(True, True)
+menu.add("Вы уже подписаны")
+
+
+#База Данных
+conn = sqlite3.connect("usernamechat3.db")
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS users
+        (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, username TEXT, first_name TEXT)''')
+conn.commit()
+conn.close()
+
+class SQLither:
+
+    def __init__(self, database) -> object:
+        self.conn = sqlite3.connect(database)
+        self.c = self.conn.cursor()
+
+    def exists_user(self, user_id):
+        """Проверка существования пользователя в БД"""
+        return bool(self.c.execute("SELECT * FROM users WHERE user_id=?", (user_id,)).fetchone())
+
+    def add_to_db(self, user_id, username, first_name):
+        """Добавление пользователя в БД"""
+        #self.c.execute("INSERT INTO users ('user_id') VALUES(?)", (user_id,)) and self.c.execute("INSERT INTO users ('username') VALUES(?)", (username,))
+        self.c.execute("INSERT INTO users(user_id, username, first_name) VALUES(?,?,?)", (user_id, username, first_name))
+        self.conn.commit()
+
+
+#ID Вашего канала
+chat_id = -1001814890080
+
+@dp.message_handler(commands=["start"])
+async def start(message):
+    user_id = message.from_user.id
+    username = message.from_user.username
+    #first_name = message.chat.first_name
+    first_name = message.from_user.first_name
+    #last_name = message.from_user.last_name
+    #chat_id = message.chat.id
+    if not db.exists_user(user_id):
+        db.add_to_db(user_id, username, first_name)
+        await bot.send_message(message.chat.id, "Что-бы продолжить подпишитесь на канал", reply_markup=keyboard)
+    else: #Уже в бд
+        await bot.send_message(message.chat.id, "Вы уже подписаны", reply_markup=menu)
+
 class Mydialog(StatesGroup):
     otvet = State()
 
