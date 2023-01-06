@@ -44,7 +44,7 @@ async def start(message: types.Message):
         db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
-        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
+        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билд", reply_markup=keyboard)
 
 
 @dp.callback_query_handler(text="zaya")
