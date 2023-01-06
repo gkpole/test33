@@ -77,6 +77,8 @@ async def start(message: types.Message):
         keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
         keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
         await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
+    else:
+        print("тест")
 
 @dp.callback_query_handler(text="stoimost")
 async def stoimost(call: types.CallbackQuery):
