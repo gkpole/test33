@@ -36,13 +36,13 @@ class Mydialog1(StatesGroup):
 class Mydialog2(StatesGroup):
     otvet2 = State()
 
-my_channel_id = "ид канала"
-channel_us = "ссылка на канал"
+my_channel_id = "-1001720706878"
+channel_us = "https://t.me/welat_vpn"
 #если вам нужно меньше или больше каналов то просто убираете или добавляете
 
 def no_sub():
     urlkb = InlineKeyboardMarkup(row_width=1)
-    urlButton = InlineKeyboardButton(text='Канал 1', url=channel_us)
+    urlButton = InlineKeyboardButton(text='Welat VPN', url=channel_us)
     urlkb.add(urlButton)
     return urlkb
 
@@ -52,7 +52,7 @@ async def ch_sub(sid):
     if x.status in statuss:
         return(1)
     else:
-        await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
+        await bot.send_message(sid, "🗨️ | Подпишись на каналы для продолжения", reply_markup=no_sub())
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
