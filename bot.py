@@ -52,33 +52,30 @@ async def ch_sub(sid):
     if x.status in statuss:
         return(1)
     else:
-       await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
-      
+        await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
+
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-   if await ch_sub(message.chat.id) == 1:
-        pon = db1.get_zaya(call.from_user.id)
-        if pon == None:
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="✅ | Продолжить", callback_data="start"))
-            await message.answer(f"Перед использованием нашего бота, вы соглашаетесь с пользовательским соглашением.", reply_markup=keyboard, parse_mode="html")
+    if await ch_sub(message.chat.id) == 1:
+        try:
+            pon = db1.get_zaya(message.chat.id)
+            if pon == None:
+                keyboard = types.InlineKeyboardMarkup()
+                keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
+                keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+                keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
+                await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
             else:
                 keyboard = types.InlineKeyboardMarkup()
-                keyboard.add(types.InlineKeyboardButton(text="✅ | Продолжить", callback_data="start"))
-                await message.answer(f"Перед использованием нашего бота, вы соглашаетесь с пользовательским соглашением.", reply_markup=keyboard, parse_mode="html")
-        except:
-            db1.add_user(call.from_user.id)
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="✅ | Продолжить", callback_data="start"))
-            await message.answer(f"Перед использованием нашего бота, вы соглашаетесь с пользовательским соглашением.", reply_markup=keyboard, parse_mode="html")
+                keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
+                await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
 
-@dp.callback_query_handler(text="start")
-async def start(call: types.CallbackQuery):
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-    keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
-    keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
-    await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
+        except:
+            db1.add_user(message.chat.id)
+            keyboard = types.InlineKeyboardMarkup()
+            keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
+            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+            await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="stoimost")
 async def stoimost(call: types.CallbackQuery):
