@@ -64,7 +64,7 @@ async def start(message: types.Message):
 @dp.callback_query_handler(text="start")
 async def start(call: types.CallbackQuery):
     try:
-        pon = db1.get_zaya(message.chat.id)
+        pon = db1.get_zaya(call.from_user.id)
         if pon == None:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
@@ -77,7 +77,7 @@ async def start(call: types.CallbackQuery):
             await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
 
     except:
-        db1.add_user(message.chat.id)
+        db1.add_user(call.from_user.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
         keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
