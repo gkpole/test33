@@ -28,15 +28,21 @@ class Mydialog1(StatesGroup):
 class Mydialog2(StatesGroup):
     otvet2 = State()
 
+def get_keyboard():
+    buttons = [
+        [
+            types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"),
+            types.InlineKeyboardButton(text="🔺 | Тех. помощь", callback_data="help")
+        ]
+    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    return keyboard
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
     try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
-            await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
+            await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=get_keyboard)
         else:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="Подать ещё заявку", callback_data="zaya"))
