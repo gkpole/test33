@@ -39,7 +39,7 @@ async def start(message: types.Message):
         if pon == None:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех, помощь", url="t.me/noziss"))
+            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
             await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
         else:
             keyboard = types.InlineKeyboardMarkup()
