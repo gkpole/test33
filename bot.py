@@ -62,9 +62,9 @@ async def start(message: types.Message):
             if pon == None:
                 keyboard = types.InlineKeyboardMarkup()
                 keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-                keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
-                keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/noziss"))
-                await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
+                keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+                keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
+                await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
             else:
                 keyboard = types.InlineKeyboardMarkup()
                 keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
@@ -74,8 +74,8 @@ async def start(message: types.Message):
             db1.add_user(message.chat.id)
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
-            await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
+            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+            await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="stoimost")
 async def stoimost(call: types.CallbackQuery):
