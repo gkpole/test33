@@ -50,7 +50,7 @@ async def start(message: types.Message):
         db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-        keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех, помощь", url="t.me/noziss"))
+        keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
         await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
 
 
@@ -92,7 +92,7 @@ async def process_message(message: types.Message, state: FSMContext):
         db1.add_text2(db1.get_text1(message.chat.id), user_message1, message.chat.id)
         await state.finish()
         await Mydialog2.otvet2.set()
-        await message.reply('Ваша заявка отправлена на рассмотрение. ')
+        await message.reply('📨 | Ваша заявка отправлена на рассмотрение. ')
         await state.finish()
     user_id = int(message.from_user.id)
     keyboard = types.InlineKeyboardMarkup(row_width=2)
