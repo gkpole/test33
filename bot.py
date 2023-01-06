@@ -56,13 +56,19 @@ async def start(message: types.Message):
 
 @dp.callback_query_handler(text="zaya")
 async def send_start(call: types.CallbackQuery):
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton(text="1 месяц", callback_data="one_month"))
-    keyboard.add(types.InlineKeyboardButton(text="3 месяца", callback_data="three_month"))
-    keyboard.add(types.InlineKeyboardButton(text="6 месяцев", callback_data="six_month"))
-    keyboard.add(types.InlineKeyboardButton(text="1 год", callback_data="year"))
-    await call.message.answer('⌛ | Выберете срок:', reply_markup=keyboard)
-    await Mydialog.otvet.set()
+     kb = [
+        [
+            types.KeyboardButton(text="1 мес."),
+            types.KeyboardButton(text="3 мес."),
+            types.KeyboardButton(text="6 мес."),
+            types.KeyboardButton(text="1 год"),
+        ],
+    ]
+    keyboard = types.ReplyKeyboardMarkup(
+        keyboard=kb,
+        resize_keyboard=True,
+        input_field_placeholder="Выберите срок..."
+    )
     
 @dp.message_handler(state=Mydialog.otvet)
 async def process_message(message: types.Message, state: FSMContext):
