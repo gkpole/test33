@@ -69,7 +69,7 @@ async def start(message: types.Message):
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
             await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
 
-    except:
+    try:
         db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
