@@ -23,7 +23,50 @@ storage = MemoryStorage()
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 logging.basicConfig(level=logging.INFO)
+1
 
+Форум
+Общий раздел
+Программирование
+Python
+Проверка подписки в тг боте
+Тема в разделе Python создана пользователем Delete_L 28 окт 2022. (поднята 31 окт 2022) 384 просмотра
+
+Подписаться на темуПоиск 
+Delete_L Автор темы 28 окт 2022
+166 13 дек 2020
+Видел тут такую тему но там не особо понятно
+
+В этой теме я постараюсь показать как добавить проверку подписки в бот
+
+Код Python:
+from aiogram import Bot, types
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils import executor
+from aiogram.types import ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+
+token = "token"
+bot = Bot(token=token)
+dp = Dispatcher(bot, storage=MemoryStorage())
+
+my_channel_id = "-1001814890080"
+channel_us = "https://t.me/+k9n54y65zEVmOTFi"
+#если вам нужно меньше или больше каналов то просто убираете или добавляете
+
+def no_sub():
+    urlkb = InlineKeyboardMarkup(row_width=1)
+    urlButton = InlineKeyboardButton(text='Наш канал', url=channel_us)
+    urlkb.add(urlButton)
+    return urlkb
+
+async def ch_sub(sid):
+    statuss = ['creator', 'administrator', 'member']
+    x = await bot.get_chat_member(my_channel_id, sid)
+    if x.status in statuss:
+        return(1)
+    else:
+                await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
 
 class Mydialog(StatesGroup):
     otvet = State()
@@ -39,6 +82,7 @@ class Mydialog2(StatesGroup):
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
+    if await ch_sub(message.chat.id) == 1:
     try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
