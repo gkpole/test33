@@ -34,8 +34,10 @@ async def start(message: types.Message):
     try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
+            keyboard = InlineKeyboardMarkup()
+            button = InlineKeyboardButton("🛡️ | VPN", callback_data="zaya")
+            button2 = InlineKeyboardButton('🔺 | Тех. помощь', url='t.me/Noziss')
+            keyboard.add(button, button2)
             await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
         else:
             await message.answer('Вы уже отправили заявку!')
