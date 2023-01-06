@@ -54,10 +54,6 @@ async def ch_sub(sid):
     else:
         await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
 
-@dp.message_handler(commands=['start'])
-async def start(message):
-    
-
 @dp.message_handler(commands="start")
 if await ch_sub(message.chat.id) == 1:
 async def start(message: types.Message):
