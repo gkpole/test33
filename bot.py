@@ -92,7 +92,6 @@ class Mydialog2(StatesGroup):
 async def start(message: types.Message):
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
-        try:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
             keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
