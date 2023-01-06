@@ -90,7 +90,7 @@ async def process_message(message: types.Message, state: FSMContext):
     but2 = types.InlineKeyboardButton(text="Отклонить", callback_data=f"otkl_{message.from_user.id}")
 
     keyboard.add(but1, but2)
-    await bot.send_message(chat_id=admin_used_id,
+    await bot.send_message(chat_id = -1001814890080,
                            text=f'<a href="tg://user?id={message.chat.id}">{message.from_user.first_name}</a> Отправил заявку! Его данные:\nПрофиль lolz.guru - {db1.get_text1(message.chat.id)}\nЕсть ли опыт - {db1.get_text2(message.chat.id), }\nСколько времени готов уделять - {user_message2}',
                            parse_mode='HTML', reply_markup=keyboard)
 
