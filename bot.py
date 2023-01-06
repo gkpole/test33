@@ -77,7 +77,7 @@ async def start(call: types.CallbackQuery):
             await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
 
     except:
-        db1.add_user(call.from_user.id)
+        db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
         keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
