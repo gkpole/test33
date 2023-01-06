@@ -36,8 +36,32 @@ class Mydialog1(StatesGroup):
 class Mydialog2(StatesGroup):
     otvet2 = State()
 
+my_channel_id = "-1001814890080"
+channel_us = "https://t.me/+k9n54y65zEVmOTFi"
+#если вам нужно меньше или больше каналов то просто убираете или добавляете
+
+def no_sub():
+    urlkb = InlineKeyboardMarkup(row_width=1)
+    urlButton = InlineKeyboardButton(text='Канал 1', url=channel_us)
+    urlkb.add(urlButton)
+    return urlkb
+
+async def ch_sub(sid):
+    statuss = ['creator', 'administrator', 'member']
+    x = await bot.get_chat_member(my_channel_id, sid)
+    if x.status in statuss:
+        return(1)
+        else:
+            await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
+        else:
+            await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())    
+
+@dp.message_handler(commands=['start'])
+async def start(message):
+    
 
 @dp.message_handler(commands="start")
+if await ch_sub(message.chat.id) == 1:
 async def start(message: types.Message):
     try:
         pon = db1.get_zaya(message.chat.id)
