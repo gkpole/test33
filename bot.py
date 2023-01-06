@@ -28,29 +28,23 @@ class Mydialog1(StatesGroup):
 class Mydialog2(StatesGroup):
     otvet2 = State()
 
-def get_keyboard():
-    buttons = [
-        [
-            types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"),
-            types.InlineKeyboardButton(text="🔺 | Тех. помощь", callback_data="help")
-        ]]
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    return keyboard
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
     try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
-            await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=get_keyboard)
-        else:
             keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="Подать ещё заявку", callback_data="zaya"))
-            await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
+            keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
+            await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
+        else:
+            await message.answer('Вы уже отправили заявку!')
             
     except:
         db1.add_user(message.chat.id)
-        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=get_keyboard)
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
+        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
 
 
 @dp.callback_query_handler(text="zaya")
@@ -96,7 +90,7 @@ async def process_message(message: types.Message, state: FSMContext):
     but2 = types.InlineKeyboardButton(text="Отклонить", callback_data=f"otkl_{message.from_user.id}")
 
     keyboard.add(but1, but2)
-    await bot.send_message(chat_id = -1001814890080,
+    await bot.send_message(chat_id=admin_used_id,
                            text=f'<a href="tg://user?id={message.chat.id}">{message.from_user.first_name}</a> Отправил заявку! Его данные:\nПрофиль lolz.guru - {db1.get_text1(message.chat.id)}\nЕсть ли опыт - {db1.get_text2(message.chat.id), }\nСколько времени готов уделять - {user_message2}',
                            parse_mode='HTML', reply_markup=keyboard)
 
