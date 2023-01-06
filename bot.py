@@ -59,7 +59,7 @@ async def start(message: types.Message):
    if await ch_sub(message.chat.id) == 1:
        keyboard = types.InlineKeyboardMarkup()
        keyboard.add(types.InlineKeyboardButton(text="✅ | Продолжить", callback_data="start"))
-       await message.answer(f"Перед использованием налево бота, вы соглашаетесь с <a href="https://t.me/welat_vpn_agreement">пользовательским соглашением.</a", reply_markup=keyboard, parse_mode="html")
+       await message.answer(f"Перед использованием налево бота, вы соглашаетесь с <a href=https://t.me/welat_vpn_agreement>пользовательским соглашением.</a", reply_markup=keyboard, parse_mode="html")
 
 @dp.callback_query_handler(text="start")
 async def start(message: types.Message):
