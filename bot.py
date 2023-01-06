@@ -55,8 +55,8 @@ async def ch_sub(sid):
         await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
 
 @dp.message_handler(commands="start")
-if await ch_sub(message.chat.id) == 1:
 async def start(message: types.Message):
+if await ch_sub(message.chat.id) == 1:
     try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
