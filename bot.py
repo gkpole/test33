@@ -24,24 +24,6 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 logging.basicConfig(level=logging.INFO)
 
-my_channel_id = "-1001814890080"
-channel_us = "https://t.me/+k9n54y65zEVmOTFi"
-#если вам нужно меньше или больше каналов то просто убираете или добавляете
-
-def no_sub():
-    urlkb = InlineKeyboardMarkup(row_width=1)
-    urlButton = InlineKeyboardButton(text='Наш канал', url=channel_us)
-    urlkb.add(urlButton)
-    return urlkb
-
-async def ch_sub(sid):
-    statuss = ['creator', 'administrator', 'member']
-    x = await bot.get_chat_member(my_channel_id, sid)
-    if x.status in statuss:
-        return(1)
-    else:
-                await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
-
 class Mydialog(StatesGroup):
     otvet = State()
 
@@ -56,10 +38,9 @@ class Mydialog2(StatesGroup):
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-    if await ch_sub(message.chat.id) == 1:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
-        await:
+        try:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
             keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
