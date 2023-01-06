@@ -58,10 +58,10 @@ async def ch_sub(sid):
 async def start(message: types.Message):
    if await ch_sub(message.chat.id) == 1:
         pon = db1.get_zaya(call.from_user.id)
-            if pon == None:
-                keyboard = types.InlineKeyboardMarkup()
-                keyboard.add(types.InlineKeyboardButton(text="✅ | Продолжить", callback_data="start"))
-                await message.answer(f"Перед использованием нашего бота, вы соглашаетесь с пользовательским соглашением.", reply_markup=keyboard, parse_mode="html")
+        if pon == None:
+            keyboard = types.InlineKeyboardMarkup()
+            keyboard.add(types.InlineKeyboardButton(text="✅ | Продолжить", callback_data="start"))
+            await message.answer(f"Перед использованием нашего бота, вы соглашаетесь с пользовательским соглашением.", reply_markup=keyboard, parse_mode="html")
             else:
                 keyboard = types.InlineKeyboardMarkup()
                 keyboard.add(types.InlineKeyboardButton(text="✅ | Продолжить", callback_data="start"))
