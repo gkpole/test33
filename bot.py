@@ -34,10 +34,8 @@ async def start(message: types.Message):
     try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
-            keyboard = InlineKeyboardMarkup()
-            button = InlineKeyboardButton("🛡️ | VPN", callback_data="zaya")
-            button2 = InlineKeyboardButton('🔺 | Тех. помощь', url='t.me/Noziss')
-            keyboard.add(button, button2)
+            keyboard = types.InlineKeyboardMarkup()
+            keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
             await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
         else:
             await message.answer('Вы уже отправили заявку!')
@@ -46,7 +44,7 @@ async def start(message: types.Message):
         db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
-        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билд", reply_markup=keyboard)
+        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
 
 
 @dp.callback_query_handler(text="zaya")
