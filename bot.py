@@ -34,17 +34,21 @@ async def start(message: types.Message):
     try:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
-            await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
+            urlkb = InlineKeyboardMarkup(row_width=1)
+            urlButton = InlineKeyboardButton(text='🛡️ | VPN', callback_data='zaya')
+            urlButton2 = InlineKeyboardButton(text='🔺 | Тех. Помощь', url='t.me/noziss')
+            urlkb.add(urlButton,urlButton2)
+            await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=urlkb)
         else:
             await message.answer('Вы уже отправили заявку!')
             
     except:
         db1.add_user(message.chat.id)
-        keyboard = types.InlineKeyboardMarkup()
-        keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
-        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
+        urlkb = InlineKeyboardMarkup(row_width=1)
+        urlButton = InlineKeyboardButton(text='🛡️ | VPN', callback_data='zaya')
+        urlButton2 = InlineKeyboardButton(text='🔺 | Тех. Помощь', url='t.me/noziss')
+        urlkb.add(urlButton,urlButton2)
+        await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=urlkb)
 
 
 @dp.callback_query_handler(text="zaya")
