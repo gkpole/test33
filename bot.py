@@ -56,26 +56,26 @@ async def ch_sub(sid):
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-if await ch_sub(message.chat.id) == 1:
-    try:
-        pon = db1.get_zaya(message.chat.id)
-        if pon == None:
+    if await ch_sub(message.chat.id) == 1:
+        try:
+            pon = db1.get_zaya(message.chat.id)
+            if pon == None:
+                keyboard = types.InlineKeyboardMarkup()
+                keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
+                keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
+                keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/noziss"))
+                await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
+            else:
+                keyboard = types.InlineKeyboardMarkup()
+                keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
+                await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
+
+        except:
+            db1.add_user(message.chat.id)
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
             keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
-            keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/noziss"))
             await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
-        else:
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
-            await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
-
-    except:
-        db1.add_user(message.chat.id)
-        keyboard = types.InlineKeyboardMarkup()
-        keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-        keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
-        await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="stoimost")
 async def stoimost(call: types.CallbackQuery):
