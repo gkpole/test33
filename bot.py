@@ -35,11 +35,8 @@ async def start(message: types.Message):
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
             keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-            keyboard2 = types.InlineKeyboardMarkup()
-
-            keyboard.add(types.InlineKeyboardButton(text="🔺 | тех. Помощь", callback_data="help"))
-            await message.answer("<b> Здравствуйте!\nМы компания welat VPN </b>", reply_markup=keyboard)
+            keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
+            await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
         else:
             await message.answer('Вы уже отправили заявку!')
             
@@ -49,28 +46,10 @@ async def start(message: types.Message):
         keyboard.add(types.InlineKeyboardButton(text="Подать заявку", callback_data="zaya"))
         await message.answer("Добро пожаловать в гей-тим, подайте заявку для получения билда", reply_markup=keyboard)
 
-dp.callback_query_handler(text="help")
-
-async def send_help(call: types.CallbackQuery):
-
-    await call.message.edit_text('Ниже отпрвлены контакты:')
-        keyboard = InlineKeyboardMarkup()
-        button = InlineKeyboardButton('text', url='https://t.me/NoZiss')
-        keyboard.add(button)
 
 @dp.callback_query_handler(text="zaya")
 async def send_start(call: types.CallbackQuery):
-    await call.message.edit_text('⏳ | Выберете период:')
-    button_one_month = KeyboardButton('1 месяц')
-    button_three_month = KeyboardButton('3 месяца')
-    button_six_month = KeyboardButton('6 месяцев')
-    button_year = KeyboardButton('1 гоб')
-    
-greet_kb = ReplyKeyboardMarkup()
-greet_kb.add(button_one_month)
-greet_kb.add(button_three_month)
-greet_kb.add(button_six_month)
-greet_kb.add(button_year)
+    await call.message.edit_text('Отправьте ссылку на ваш профиль lolz.guru')
     await Mydialog.otvet.set()
     
 @dp.message_handler(state=Mydialog.otvet)
@@ -81,7 +60,7 @@ async def process_message(message: types.Message, state: FSMContext):
         db1.add_text1(user_message, message.chat.id)
         await state.finish()
 
-    await message.reply('✉️ | Введите вашу почту:')
+    await message.reply('Есть ли у вас опыт? Если да - сколько?')
     await Mydialog1.otvet1.set()
     
 @dp.message_handler(state=Mydialog1.otvet1)
@@ -92,6 +71,17 @@ async def process_message(message: types.Message, state: FSMContext):
         db1.add_text2(db1.get_text1(message.chat.id), user_message1, message.chat.id)
         await state.finish()
         await Mydialog2.otvet2.set()
+        await message.reply('Сколько времени готовы уделять нашему проекту?')
+        
+@dp.message_handler(state=Mydialog2.otvet2)
+async def process_message(message: types.Message, state: FSMContext):
+    message.chat.id = int(message.chat.id)
+    async with state.proxy() as data2:
+        data2['text'] = message.text
+        user_message2 = data2['text']
+        keyboard = types.InlineKeyboardMarkup(row_width=1)
+        db1.add_text3(db1.get_text1(message.chat.id), db1.get_text2(message.chat.id), user_message2, message.chat.id)
+
         await message.reply('Ваша заявка отправлена.')
         await state.finish()
     user_id = int(message.from_user.id)
@@ -110,14 +100,14 @@ async def process_message(message: types.Message, state: FSMContext):
         
         
         db1.add_confirm(db1.get_text1(message.chat.id), db1.get_text2(message.chat.id), user_message2, user_id, 1)
-        await bot.send_message(chat_id=user_id, text="Ваш заказ был принят")
+        await bot.send_message(chat_id=user_id, text="тебя приняли, дурак")
         await call.message.delete()
 
     @dp.callback_query_handler(text_startswith=f"otkl_{message.from_user.id}")
     async def send_otkl(call: types.CallbackQuery):
         user_id = int(call.data.split("_")[1])
         db1.add_confirm(db1.get_text1(message.chat.id), db1.get_text2(message.chat.id), user_message2, user_id, 2)
-        await bot.send_message(chat_id=user_id, text="Ваш заказ отклонили")
+        await bot.send_message(chat_id=user_id, text="аххахахахахах пошол нахуй отклонен")
         await call.message.delete()
         
          
