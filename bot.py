@@ -59,6 +59,7 @@ async def start(message: types.Message):
     if await ch_sub(message.chat.id) == 1:
         pon = db1.get_zaya(message.chat.id)
         if pon == None:
+        try:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
             keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
@@ -69,7 +70,7 @@ async def start(message: types.Message):
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
             await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
 
-    try:
+    exec:
         db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
