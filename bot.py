@@ -24,10 +24,15 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 logging.basicConfig(level=logging.INFO)
 
+
 class Mydialog(StatesGroup):
     otvet = State()
+
+
 class Mydialog1(StatesGroup):
     otvet1 = State()
+
+
 class Mydialog2(StatesGroup):
     otvet2 = State()
 
@@ -40,12 +45,13 @@ async def start(message: types.Message):
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
             keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
+            keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/noziss"))
             await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
         else:
             keyboard = types.InlineKeyboardMarkup()
             keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
             await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
-            
+
     except:
         db1.add_user(message.chat.id)
         keyboard = types.InlineKeyboardMarkup()
@@ -53,10 +59,16 @@ async def start(message: types.Message):
         keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/noziss"))
         await message.answer(f"Здравствуйте! \n Мы компания welat VPN", reply_markup=keyboard)
 
+@dp.callback_query_handler(text="stoimost")
+async def stoimost(call: types.CallbackQuery):
+    keyboard = types.InlineKeyboardMarkup()
+    keyboard.add(types.InlineKeyboardButton(text="Назад", callback_data="zaya"))
+    await call.message.answer(f'Стоимость:n\ 1 месяц (3$)n\3 месяца (9$)n\6 месяцев(18$)n\1 год (30$)', reply_markup=keyboard)
+
 
 @dp.callback_query_handler(text="zaya")
 async def send_start(call: types.CallbackQuery):
-     kb = [
+    kb = [
         [
             types.KeyboardButton(text="1 мес."),
             types.KeyboardButton(text="3 мес."),
@@ -69,7 +81,10 @@ async def send_start(call: types.CallbackQuery):
         resize_keyboard=True,
         input_field_placeholder="Выберите срок..."
     )
-    
+    await call.message.answer(f'<b>⌛ | Выберете срок:</b> \n\n 💡 | Стоимость: \n 1 месяц (3$) \n 3 месяца (9$) \n 6 месяцев(18$) \n 1 год (30$)', reply_markup=keyboard, parse_mode="html")
+    await Mydialog.otvet.set()
+
+
 @dp.message_handler(state=Mydialog.otvet)
 async def process_message(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
@@ -78,10 +93,10 @@ async def process_message(message: types.Message, state: FSMContext):
         db1.add_text1(user_message, message.chat.id)
         await state.finish()
 
-    await message.reply('✉️ | Введите вашу почту:',  reply_markup=types.ReplyKeyboardRemove())
+    await message.reply('✉️ | Введите вашу почту:', reply_markup=types.ReplyKeyboardRemove())
     await Mydialog1.otvet1.set()
 
-    
+
 @dp.message_handler(state=Mydialog1.otvet1)
 async def process_message(message: types.Message, state: FSMContext):
     async with state.proxy() as data1:
@@ -102,11 +117,8 @@ async def process_message(message: types.Message, state: FSMContext):
                            text=f'<a href="tg://user?id={message.chat.id}">{message.from_user.first_name}</a> Отправил заявку! Его данные:\nСрок - {db1.get_text1(message.chat.id)}\nПочта - {db1.get_text2(message.chat.id)}',
                            parse_mode='HTML', reply_markup=keyboard)
 
-    
     @dp.callback_query_handler(text_startswith=f"prin_{message.from_user.id}")
     async def send_prin(call: types.CallbackQuery):
-        
-        
         db1.add_confirm(db1.get_text1(message.chat.id), db1.get_text2(message.chat.id), user_message1, user_id, 1)
         await bot.send_message(chat_id=user_id, text="✅ | Вашу заявку приняли. Ожидайте ответа.")
         await call.message.edit_text("Сообщил пользователю, что его заявка принята. Ожидает вашего ответа")
@@ -117,8 +129,7 @@ async def process_message(message: types.Message, state: FSMContext):
         db1.add_confirm(db1.get_text1(message.chat.id), db1.get_text2(message.chat.id), user_message1, user_id, 2)
         await bot.send_message(chat_id=user_id, text="🚫 | Вашу заявку отменили")
         await call.message.edit_text("Сообщил пользователю, что его заявка отклонена. Ожидает вашего ответа")
-        
-         
-        
+
+
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
