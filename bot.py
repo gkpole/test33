@@ -266,7 +266,7 @@ async def handle_banned(msg: types.Message):
 @dp.message_handler(content_types=['text'], text='Добавить в ЧС', user_id=admin_id)
 async def handle_ban_command(msg: types.Message):
     await msg.reply("Укажи ID пользователя.")
-    banned_users.add(message.text)
+        banned_users.add(message.text)
     await msg.reply(f"Пользователь {abuser_id} заблокирован.")
 
 @dp.message_handler(content_types=['text'], text='Убрать из ЧС', user_id=admin_id)
