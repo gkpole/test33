@@ -83,47 +83,49 @@ async def start(message: types.Message):
     cur = conn.cursor()
     cur.execute(f"SELECT block FROM users WHERE user_id = {message.chat.id}")
     result = cur.fetchone()
-    if message.from_user.id == ADMIN:
-        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-        await message.answer('Добро пожаловать в Админ-Панель! Выберите действие на клавиатуре', reply_markup=keyboard)
-    else:
-        if result is None:
-            cur = conn.cursor()
-            cur.execute(f'''SELECT * FROM users WHERE (user_id="{message.from_user.id}")''')
-            entry = cur.fetchone()
-            if entry is None:
-                cur.execute(f'''INSERT INTO users VALUES ('{message.from_user.id}', '0')''')
-            conn.commit()
-            try:
-                pon = db1.get_zaya(message.chat.id)
-                if pon == None:
+    if await ch_sub(message.chat.id) == 1:
+        if message.from_user.id == ADMIN:
+            keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+            #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+            keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+            await message.answer('Добро пожаловать в Админ-Панель! Выберите действие на клавиатуре', reply_markup=keyboard)
+        else:
+            if result is None:
+                cur = conn.cursor()
+                cur.execute(f'''SELECT * FROM users WHERE (user_id="{message.from_user.id}")''')
+                entry = cur.fetchone()
+                if entry is None:
+                    cur.execute(f'''INSERT INTO users VALUES ('{message.from_user.id}', '0')''')
+                conn.commit()
+                try:
+                    pon = db1.get_zaya(message.chat.id)
+                    if pon == None:
+                        keyboard = types.InlineKeyboardMarkup()
+                        keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
+                        keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+                        keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
+                        await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
+                    else:
+                        keyboard = types.InlineKeyboardMarkup()
+                        keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
+                        await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
+
+                except:
+                    db1.add_user(message.chat.id)
                     keyboard = types.InlineKeyboardMarkup()
                     keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
                     keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
                     keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
                     await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
-                else:
-                    keyboard = types.InlineKeyboardMarkup()
-                    keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
-                    await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
-
-            except:
-                db1.add_user(message.chat.id)
+            else:
                 keyboard = types.InlineKeyboardMarkup()
                 keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
                 keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
                 keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
                 await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
-        else:
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
-            keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
-            await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
-
+    else:
+        await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
 
 @dp.message_handler(content_types=['text'], text='Рассылка')
 async def spam(message: types.Message):
