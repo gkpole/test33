@@ -66,7 +66,8 @@ channel_us = "https://t.me/welat_vpn"
 
 def no_sub():
     urlkb = InlineKeyboardMarkup(row_width=1)
-    urlButton = InlineKeyboardButton(text='Welat VPN', url=channel_us)
+    urlButton = InlineKeyboardButton(text='🕵️ | Welat VPN', url=channel_us)
+    urlButton = InlineKeyboardButton(text='🛡️ | Польз. соглашение', url='https://t.me/welat_vpn_agreement')
     urlkb.add(urlButton)
     return urlkb
 
@@ -76,7 +77,7 @@ async def ch_sub(sid):
     if x.status in statuss:
         return(1)
     else:
-        await bot.send_message(sid, "Подпишись на каналы для продолжения", reply_markup=no_sub())
+        await bot.send_message(sid, "🗨️ | Подпишись на каналы для продолжения", reply_markup=no_sub())
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
