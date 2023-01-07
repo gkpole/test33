@@ -378,8 +378,8 @@ async def process_message(message: types.Message, state: FSMContext):
 @dp.message_handler(commands="database")
 async def database(message: types.Message):
     if message.from_user.id == ADMIN:
-        bot.send_document(message.chat.id, "db.db")
-        bot.send_document(message.chat.id, "db2.db")
+        await bot.send_document(message.chat.id, "db.db")
+        await  bot.send_document(message.chat.id, "db2.db")
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
