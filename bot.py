@@ -255,7 +255,7 @@ async def process_message(message: types.Message, state: FSMContext):
 
 @dp.message_handler(user_id=banned_users)
 async def handle_banned(msg: Message):
-    await bot.send_message(chat_id=
+    await message.answer("ты был заблокирован администрацией")
 
 @dp.message_handler(content_types=['text'], text='Добавить в ЧС')
 async def handle_ban_command(msg: Message):
