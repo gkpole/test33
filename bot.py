@@ -15,6 +15,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.utils.exceptions import Throttled
+from aiogram.utils.exceptions import Unauthorized 
 from aiogram import types
 from config import *
 from random import *
