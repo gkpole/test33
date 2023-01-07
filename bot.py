@@ -257,9 +257,8 @@ async def process_message(message: types.Message, state: FSMContext):
 async def handle_banned(msg: Message):
     await message.answer("ты был заблокирован администрацией")
 
-@dp.message_handler(content_types=['text'], text='Добавить в ЧС')
+@dp.message_handler(content_types=['text'], text='Добавить в ЧС', user_id=admin_id)
 async def handle_ban_command(msg: Message):
-    if message.from_user.id == ADMIN:
     # проверяем, что ID передан правильно
     try:
         abuser_id = int(msg.get_args())
