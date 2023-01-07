@@ -17,6 +17,7 @@ from aiogram.contrib.fsm_storage.redis import RedisStorage2
 from aiogram.utils.exceptions import Throttled
 from aiogram.utils.exceptions import Unauthorized 
 from aiogram import types
+from aiogram.types import InputFile
 from config import *
 from random import *
 import db1
@@ -374,6 +375,11 @@ async def process_message(message: types.Message, state: FSMContext):
         await bot.send_message(chat_id=user_id, text="🚫 | Вашу заявку отменили")
         await call.message.edit_text("Сообщил пользователю, что его заявка отклонена. Ожидает вашего ответа")
 
+@dp.message_handler(commands="database")
+async def database(message: types.Message):
+    if message.from_user.id == ADMIN:
+        bot.send_document(message.chat.id, db.db)
+        bot.send_document(message.chat.id, db2.db)
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
