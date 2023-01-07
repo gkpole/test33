@@ -151,9 +151,10 @@ async def start_spam(message: types.Message, state: FSMContext):
         for z in range(len(spam_base)):
             try:
                 await bot.send_message(spam_base[z][0], message.text)
-            except aiogram.utils.exceptions.Unauthorized:
-                await message.answer('Рассылка завершена.')
-                await state.finish()
+            except BaseException as ex:
+            print(f"{type(ex).__name__}: {ex}")
+            await message.answer('Рассылка завершена')
+            await state.finish()
 
 
 @dp.message_handler(state='*', text='Назад')
