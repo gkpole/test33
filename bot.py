@@ -152,9 +152,9 @@ async def start_spam(message: types.Message, state: FSMContext):
             try:
                 await bot.send_message(spam_base[z][0], message.text)
             except BaseException as ex:
-            print(f"{type(ex).__name__}: {ex}")
-            await message.answer('Рассылка завершена')
-            await state.finish()
+                print(f"{type(ex).__name__}: {ex}")
+                await message.answer('Рассылка завершена')
+                await state.finish()
 
 
 @dp.message_handler(state='*', text='Назад')
