@@ -170,133 +170,6 @@ async def back(message: types.Message):
     else:
         await message.answer('Вам не доступна эта функция')
 
-
-@dp.message_handler(content_types=['text'], text='Добавить в ЧС')
-async def hanadler(message: types.Message, state: FSMContext):
-    if message.chat.id == ADMIN:
-        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(types.InlineKeyboardButton(text="Назад"))
-        await message.answer(
-            'Введите id пользователя, которого нужно заблокировать.\nДля отмены нажмите кнопку ниже',
-            reply_markup=keyboard)
-        await dialog.blacklist.set()
-
-
-@dp.message_handler(state=dialog.blacklist)
-async def proce(message: types.Message, state: FSMContext):
-    if message.text == 'Назад':
-        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-        await message.answer('Отмена! Возвращаю назад.', reply_markup=keyboard)
-        await state.finish()
-    else:
-        if message.text.isdigit():
-            cur = conn.cursor()
-            cur.execute(f"SELECT block FROM users WHERE user_id = {message.text}")
-            result = cur.fetchall()
-            # conn.commit()
-            if len(result) == 0:
-                keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-                keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-                keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-                await message.answer('Такой пользователь не найден в базе данных.', reply_markup=keyboard)
-                await state.finish()
-            else:
-                a = result[0]
-                id = a[0]
-                if id == 0:
-                    cur.execute(f"UPDATE users SET block = 1 WHERE user_id = {message.text}")
-                    conn.commit()
-                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-                    await message.answer('Пользователь успешно добавлен в ЧС.', reply_markup=keyboard)
-                    await state.finish()
-                    await bot.send_message(message.text, 'Ты получил БАН от администрации.')
-                else:
-                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-                    await message.answer('Данный пользователь уже получил бан', reply_markup=keyboard)
-                    await state.finish()
-        else:
-            await message.answer('Ты вводишь буквы...\n\nВведи ID')
-
-
-@dp.message_handler(content_types=['text'], text='Убрать из ЧС')
-async def hfandler(message: types.Message, state: FSMContext):
-    cur = conn.cursor()
-    cur.execute(f"SELECT block FROM users WHERE user_id = {message.chat.id}")
-    result = cur.fetchone()
-    if result is None:
-        if message.chat.id == ADMIN:
-            keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            keyboard.add(types.InlineKeyboardButton(text="Назад"))
-            await message.answer(
-                'Введите id пользователя, которого нужно разблокировать.\nДля отмены нажмите кнопку ниже',
-                reply_markup=keyboard)
-            await dialog.whitelist.set()
-
-
-@dp.message_handler(state=dialog.whitelist)
-async def proc(message: types.Message, state: FSMContext):
-    if message.text == 'Отмена':
-        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-        await message.answer('Отмена! Возвращаю назад.', reply_markup=keyboard)
-        await state.finish()
-    else:
-        if message.text.isdigit():
-            cur = conn.cursor()
-            cur.execute(f"SELECT block FROM users WHERE user_id = {message.text}")
-            result = cur.fetchall()
-            conn.commit()
-            if len(result) == 0:
-                keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-                keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-                keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-                await message.answer('Такой пользователь не найден в базе данных.', reply_markup=keyboard)
-                await state.finish()
-            else:
-                a = result[0]
-                id = a[0]
-                if id == 1:
-                    cur = conn.cursor()
-                    cur.execute(f"UPDATE users SET block = 0 WHERE user_id = = {message.text}")
-                    conn.commit()
-                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-                    await message.answer('Пользователь успешно разбанен.', reply_markup=keyboard)
-                    await state.finish()
-                    await bot.send_message(message.text, 'Вы были разблокированы администрацией.')
-                else:
-                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
-                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-                    await message.answer('Данный пользователь не получал бан.', reply_markup=keyboard)
-                    await state.finish()
-        else:
-            await message.answer('Ты вводишь буквы...\n\nВведи ID')
-
 @dp.message_handler(content_types=['text'], text='Статистика')
 async def hfandler(message: types.Message, state: FSMContext):
     cur = conn.cursor()
@@ -375,11 +248,34 @@ async def process_message(message: types.Message, state: FSMContext):
         await bot.send_message(chat_id=user_id, text="🚫 | Вашу заявку отменили")
         await call.message.edit_text("Сообщил пользователю, что его заявка отклонена. Ожидает вашего ответа")
 
-@dp.message_handler(commands="database")
-async def database(message: types.Message):
+@dp.message_handler(user_id=banned_users)
+async def handle_banned(msg: Message):
+    await bot.send_message(chat_id=
+
+@dp.message_handler(content_types=['text'], text='Добавить в ЧС')
+async def handle_ban_command(msg: Message):
     if message.from_user.id == ADMIN:
-        await bot.send_document(message.chat.id, "/root/test33/db.db")
-        await  bot.send_document(message.chat.id, "/root/test33/db2.db")
+    # проверяем, что ID передан правильно
+    try:
+        abuser_id = int(msg.get_args())
+    except (ValueError, TypeError):
+        return await msg.reply("Укажи ID пользователя.")
+    
+    banned_users.add(abuser_id)
+    await msg.reply(f"Пользователь {abuser_id} заблокирован.")
+
+@dp.message_handler(content_types=['text'], text='Убрать из ЧС')
+async def handle_ban_command(msg: Message):
+    if message.from_user.id == ADMIN:
+    # проверяем, что ID передан правильно
+    try:
+        abuser_id = int(msg.get_args())
+    except (ValueError, TypeError):
+        return await msg.reply("Укажи ID пользователя.")
+    
+    banned_users.remove(abuser_id)
+    await msg.reply(f"Пользователь {abuser_id} разблокирован.")
+
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
