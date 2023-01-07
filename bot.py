@@ -120,10 +120,10 @@ async def start(message: types.Message):
                 await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
         else:
             keyboard = types.InlineKeyboardMarkup()
-                keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-                keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
-                keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
-                await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
+            keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
+            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+            keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
+            await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
 
 
 @dp.message_handler(content_types=['text'], text='Рассылка')
