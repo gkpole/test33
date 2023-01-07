@@ -77,8 +77,8 @@ async def ch_sub(sid):
         await bot.send_message(sid, "🗨️ | Подпишись на каналы для продолжения", reply_markup=no_sub())
 
 
-@dp.message_handler(commands=['admin'])
-async def admin(message: types.Message):
+@dp.message_handler(commands="start")
+async def start(message: types.Message):
     cur = conn.cursor()
     cur.execute(f"SELECT block FROM users WHERE user_id = {message.chat.id}")
     result = cur.fetchone()
@@ -88,43 +88,38 @@ async def admin(message: types.Message):
         keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
-        await message.answer('Добро пожаловать в Админ-Панель! Выберите действие на клавиатуре', reply_markup=kb)
-
-@dp.message_handler(commands="start")
-async def start(message: types.Message):
-    if await ch_sub(message.chat.id) == 1:
-        cur = conn.cursor()
-        cur.execute(f"SELECT block FROM users WHERE user_id = {message.chat.id}")
-        result = cur.fetchone()
+        await message.answer('Добро пожаловать в Админ-Панель! Выберите действие на клавиатуре', reply_markup=keyboard)
+    else:
         if result is None:
             cur = conn.cursor()
             cur.execute(f'''SELECT * FROM users WHERE (user_id="{message.from_user.id}")''')
             entry = cur.fetchone()
             if entry is None:
                 cur.execute(f'''INSERT INTO users VALUES ('{message.from_user.id}', '0')''')
-                conn.commit()
-                try:
-                    pon = db1.get_zaya(message.chat.id)
-                    if pon == None:
-                        keyboard = types.InlineKeyboardMarkup()
-                        keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-                        keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
-                        keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
-                        await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
-                    else:
-                        keyboard = types.InlineKeyboardMarkup()
-                        keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
-                        await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
-
-                except:
-                    db1.add_user(message.chat.id)
+            conn.commit()
+            try:
+                pon = db1.get_zaya(message.chat.id)
+                if pon == None:
                     keyboard = types.InlineKeyboardMarkup()
                     keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
                     keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
                     keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
                     await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
+                else:
+                    keyboard = types.InlineKeyboardMarkup()
+                    keyboard.add(types.InlineKeyboardButton(text="🛡️ | Отправить еще раз", callback_data="zaya"))
+                    await message.answer('Вы уже отправили заявку!', reply_markup=keyboard)
+
+            except:
+                db1.add_user(message.chat.id)
+                keyboard = types.InlineKeyboardMarkup()
+                keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
+                keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+                keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
+                await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
         else:
             await message.answer('Ты был заблокирован!')
+
 
 @dp.message_handler(content_types=['text'], text='Рассылка')
 async def spam(message: types.Message):
@@ -153,9 +148,12 @@ async def start_spam(message: types.Message, state: FSMContext):
         for z in range(len(spam_base)):
             print(spam_base[z][0])
         for z in range(len(spam_base)):
-            await bot.send_message(spam_base[z][0], message.text)
-        await message.answer('Рассылка завершена')
-        await state.finish()
+            try:
+                await bot.send_message(spam_base[z][0], message.text)
+        except BaseException as ex:
+            print(f"{type(ex).__name__}: {ex}")
+            await message.answer('Рассылка завершена')
+            await state.finish()
 
 
 @dp.message_handler(state='*', text='Назад')
