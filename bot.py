@@ -23,6 +23,12 @@ from random import *
 import db1
 import blacklist 
 
+###############################место для банов########################₽₽
+banned_users = set()
+
+
+
+###############################пон####################
 storage = MemoryStorage()
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
