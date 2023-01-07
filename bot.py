@@ -118,7 +118,7 @@ async def start(message: types.Message):
                 keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
                 keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
                 await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
-     else:
+    else:
         await message.answer('Ты был заблокирован!')
 
 
