@@ -21,14 +21,7 @@ from aiogram.types import InputFile
 from config import *
 from random import *
 import db1
-import blacklist 
 
-###############################место для банов########################₽₽
-banned_users = set()
-
-
-
-###############################пон####################
 storage = MemoryStorage()
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
@@ -53,7 +46,6 @@ class dialog(StatesGroup):
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
 kb.add(types.InlineKeyboardButton(text="Рассылка"))
 kb.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-kb.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
 kb.add(types.InlineKeyboardButton(text="Статистика"))
 
 class Mydialog(StatesGroup):
@@ -74,6 +66,7 @@ channel_us=sub_channel_url
 def no_sub():
     urlkb = InlineKeyboardMarkup(row_width=1)
     urlButton = InlineKeyboardButton(text='Welat VPN', url=channel_us)
+    urlButton = InlineKeyboardButton(text='Польз. соглашение', url="t.me/welat_vpn_agreement")
     urlkb.add(urlButton)
     return urlkb
 
@@ -95,7 +88,6 @@ async def start(message: types.Message):
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
         keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Добро пожаловать в Админ-Панель! Выберите действие на клавиатуре', reply_markup=keyboard)
     else:
@@ -127,11 +119,7 @@ async def start(message: types.Message):
                 keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
                 await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
         else:
-            keyboard = types.InlineKeyboardMarkup()
-            keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
-            keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
-            keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
-            await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
+            await message.answer('Ты был заблокирован!')
 
 
 @dp.message_handler(content_types=['text'], text='Рассылка')
@@ -149,7 +137,6 @@ async def start_spam(message: types.Message, state: FSMContext):
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
         keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Главное меню', reply_markup=keyboard)
         await state.finish()
@@ -175,11 +162,129 @@ async def back(message: types.Message):
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
         keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
-        keyboard.add(types.InlineKeyboardButton(text="Убрать из ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Главное меню', reply_markup=keyboard)
     else:
         await message.answer('Вам не доступна эта функция')
+
+
+@dp.message_handler(content_types=['text'], text='Добавить в ЧС')
+async def hanadler(message: types.Message, state: FSMContext):
+    if message.chat.id == ADMIN:
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        keyboard.add(types.InlineKeyboardButton(text="Назад"))
+        await message.answer(
+            'Введите id пользователя, которого нужно заблокировать.\nДля отмены нажмите кнопку ниже',
+            reply_markup=keyboard)
+        await dialog.blacklist.set()
+
+
+@dp.message_handler(state=dialog.blacklist)
+async def proce(message: types.Message, state: FSMContext):
+    if message.text == 'Назад':
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+        keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+        await message.answer('Отмена! Возвращаю назад.', reply_markup=keyboard)
+        await state.finish()
+    else:
+        if message.text.isdigit():
+            cur = conn.cursor()
+            cur.execute(f"SELECT block FROM users WHERE user_id = {message.text}")
+            result = cur.fetchall()
+            # conn.commit()
+            if len(result) == 0:
+                keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+                keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+                await message.answer('Такой пользователь не найден в базе данных.', reply_markup=keyboard)
+                await state.finish()
+            else:
+                a = result[0]
+                id = a[0]
+                if id == 0:
+                    cur.execute(f"UPDATE users SET block = 1 WHERE user_id = {message.text}")
+                    conn.commit()
+                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+                    await message.answer('Пользователь успешно добавлен в ЧС.', reply_markup=keyboard)
+                    await state.finish()
+                    await bot.send_message(message.text, 'Ты получил БАН от администрации.')
+                else:
+                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+                    await message.answer('Данный пользователь уже получил бан', reply_markup=keyboard)
+                    await state.finish()
+        else:
+            await message.answer('Ты вводишь буквы...\n\nВведи ID')
+
+
+@dp.message_handler(content_types=['text'], text='Убрать из ЧС')
+async def hfandler(message: types.Message, state: FSMContext):
+    cur = conn.cursor()
+    cur.execute(f"SELECT block FROM users WHERE user_id = {message.chat.id}")
+    result = cur.fetchone()
+    if result is None:
+        if message.chat.id == ADMIN:
+            keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            keyboard.add(types.InlineKeyboardButton(text="Назад"))
+            await message.answer(
+                'Введите id пользователя, которого нужно разблокировать.\nДля отмены нажмите кнопку ниже',
+                reply_markup=keyboard)
+            await dialog.whitelist.set()
+
+
+@dp.message_handler(state=dialog.whitelist)
+async def proc(message: types.Message, state: FSMContext):
+    if message.text == 'Отмена':
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+        keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+        await message.answer('Отмена! Возвращаю назад.', reply_markup=keyboard)
+        await state.finish()
+    else:
+        if message.text.isdigit():
+            cur = conn.cursor()
+            cur.execute(f"SELECT block FROM users WHERE user_id = {message.text}")
+            result = cur.fetchall()
+            conn.commit()
+            if len(result) == 0:
+                keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+                keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+                await message.answer('Такой пользователь не найден в базе данных.', reply_markup=keyboard)
+                await state.finish()
+            else:
+                a = result[0]
+                id = a[0]
+                if id == 1:
+                    cur = conn.cursor()
+                    cur.execute(f"UPDATE users SET block = 0 WHERE user_id = {message.text}")
+                    conn.commit()
+                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+                    await message.answer('Пользователь успешно разбанен.', reply_markup=keyboard)
+                    await state.finish()
+                    await bot.send_message(message.text, 'Вы были разблокированы администрацией.')
+                else:
+                    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+                    keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
+                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    keyboard.add(types.InlineKeyboardButton(text="Статистика"))
+                    await message.answer('Данный пользователь не получал бан.', reply_markup=keyboard)
+                    await state.finish()
+        else:
+            await message.answer('Ты вводишь буквы...\n\nВведи ID')
 
 @dp.message_handler(content_types=['text'], text='Статистика')
 async def hfandler(message: types.Message, state: FSMContext):
