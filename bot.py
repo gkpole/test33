@@ -273,13 +273,13 @@ async def handle_ban_command(msg: Message):
 async def handle_ban_command(msg: Message):
     if message.from_user.id == ADMIN:
     # проверяем, что ID передан правильно
-    try:
-        abuser_id = int(msg.get_args())
-    except (ValueError, TypeError):
-        return await msg.reply("Укажи ID пользователя.")
+        try:
+            abuser_id = int(msg.get_args())
+        except (ValueError, TypeError):
+            return await msg.reply("Укажи ID пользователя.")
     
-    banned_users.remove(abuser_id)
-    await msg.reply(f"Пользователь {abuser_id} разблокирован.")
+        banned_users.remove(abuser_id)
+        await msg.reply(f"Пользователь {abuser_id} разблокирован.")
 
 
 if __name__ == '__main__':
