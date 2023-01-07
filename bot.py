@@ -260,11 +260,11 @@ async def process_message(message: types.Message, state: FSMContext):
         await call.message.edit_text("Сообщил пользователю, что его заявка отклонена. Ожидает вашего ответа")
 
 @dp.message_handler(user_id=banned_users)
-async def handle_banned(msg: type.Message):
+async def handle_banned(msg: types.Message):
     await message.answer("ты был заблокирован администрацией")
 
 @dp.message_handler(content_types=['text'], text='Добавить в ЧС', user_id=admin_id)
-async def handle_ban_command(msg: type.Message):
+async def handle_ban_command(msg: types.Message):
     # проверяем, что ID передан правильно
     try:
         abuser_id = int(msg.get_args())
@@ -275,7 +275,7 @@ async def handle_ban_command(msg: type.Message):
     await msg.reply(f"Пользователь {abuser_id} заблокирован.")
 
 @dp.message_handler(content_types=['text'], text='Убрать из ЧС', user_id=admin_id)
-async def handle_ban_command(msg: type.Message):
+async def handle_ban_command(msg: types.Message):
     # проверяем, что ID передан правильно
     try:
         abuser_id = int(msg.get_args())
