@@ -82,7 +82,7 @@ async def ch_sub(sid):
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
     cur = conn.cursor()
-    cur.execute(f"SELECT block FROM users WHERE user_id = {message.chat.id}")
+    cur.execute(f"SELECT block = 1 FROM users WHERE user_id = {message.chat.id}")
     result = cur.fetchone()
     if message.from_user.id == ADMIN:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
