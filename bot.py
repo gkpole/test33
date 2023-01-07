@@ -45,7 +45,7 @@ class dialog(StatesGroup):
 
 kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
 kb.add(types.InlineKeyboardButton(text="Рассылка"))
-kb.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+#kb.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
 kb.add(types.InlineKeyboardButton(text="Статистика"))
 
 class Mydialog(StatesGroup):
@@ -87,7 +87,7 @@ async def start(message: types.Message):
     if message.from_user.id == ADMIN:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+        #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Добро пожаловать в Админ-Панель! Выберите действие на клавиатуре', reply_markup=keyboard)
     else:
@@ -118,8 +118,12 @@ async def start(message: types.Message):
                 keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
                 keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
                 await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
-    else:
-        await message.answer('Ты был заблокирован!')
+        else:
+            keyboard = types.InlineKeyboardMarkup()
+                keyboard.add(types.InlineKeyboardButton(text="🛡️ | VPN", callback_data="zaya"))
+                keyboard.add(types.InlineKeyboardButton(text="🔺 | Тех. помощь", url="t.me/welat_vpn_collaborator"))
+                keyboard.add(types.InlineKeyboardButton(text="📘 | Отзывы", url="t.me/welat_vpn_reviews"))
+                await message.answer(f"Здравствуйте! \n Мы компания Welat VPN", reply_markup=keyboard)
 
 
 @dp.message_handler(content_types=['text'], text='Рассылка')
@@ -136,7 +140,7 @@ async def start_spam(message: types.Message, state: FSMContext):
     if message.text == 'Назад':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+        #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Главное меню', reply_markup=keyboard)
         await state.finish()
@@ -161,7 +165,7 @@ async def back(message: types.Message):
     if message.from_user.id == ADMIN:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+        #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Главное меню', reply_markup=keyboard)
     else:
@@ -184,7 +188,7 @@ async def proce(message: types.Message, state: FSMContext):
     if message.text == 'Назад':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+        #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Отмена! Возвращаю назад.', reply_markup=keyboard)
         await state.finish()
@@ -197,7 +201,7 @@ async def proce(message: types.Message, state: FSMContext):
             if len(result) == 0:
                 keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
                 keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
                 keyboard.add(types.InlineKeyboardButton(text="Статистика"))
                 await message.answer('Такой пользователь не найден в базе данных.', reply_markup=keyboard)
                 await state.finish()
@@ -209,7 +213,7 @@ async def proce(message: types.Message, state: FSMContext):
                     conn.commit()
                     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
                     keyboard.add(types.InlineKeyboardButton(text="Статистика"))
                     await message.answer('Пользователь успешно добавлен в ЧС.', reply_markup=keyboard)
                     await state.finish()
@@ -217,7 +221,7 @@ async def proce(message: types.Message, state: FSMContext):
                 else:
                     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
                     keyboard.add(types.InlineKeyboardButton(text="Статистика"))
                     await message.answer('Данный пользователь уже получил бан', reply_markup=keyboard)
                     await state.finish()
@@ -245,7 +249,7 @@ async def proc(message: types.Message, state: FSMContext):
     if message.text == 'Отмена':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-        keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+        #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
         keyboard.add(types.InlineKeyboardButton(text="Статистика"))
         await message.answer('Отмена! Возвращаю назад.', reply_markup=keyboard)
         await state.finish()
@@ -258,7 +262,7 @@ async def proc(message: types.Message, state: FSMContext):
             if len(result) == 0:
                 keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
                 keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
                 keyboard.add(types.InlineKeyboardButton(text="Статистика"))
                 await message.answer('Такой пользователь не найден в базе данных.', reply_markup=keyboard)
                 await state.finish()
@@ -271,7 +275,7 @@ async def proc(message: types.Message, state: FSMContext):
                     conn.commit()
                     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
                     keyboard.add(types.InlineKeyboardButton(text="Статистика"))
                     await message.answer('Пользователь успешно разбанен.', reply_markup=keyboard)
                     await state.finish()
@@ -279,7 +283,7 @@ async def proc(message: types.Message, state: FSMContext):
                 else:
                     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
-                    keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
+                    #keyboard.add(types.InlineKeyboardButton(text="Добавить в ЧС"))
                     keyboard.add(types.InlineKeyboardButton(text="Статистика"))
                     await message.answer('Данный пользователь не получал бан.', reply_markup=keyboard)
                     await state.finish()
