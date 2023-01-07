@@ -59,8 +59,8 @@ class Mydialog1(StatesGroup):
 class Mydialog2(StatesGroup):
     otvet2 = State()
 
-my_channel_id=sub_channel_id
-channel_us=sub_channel_url
+my_channel_id = -1001720706878
+channel_us = t.me/welat_vpn
 #если вам нужно меньше или больше каналов то просто убираете или добавляете
 
 def no_sub():
