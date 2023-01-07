@@ -21,6 +21,7 @@ from aiogram.types import InputFile
 from config import *
 from random import *
 import db1
+import blacklist 
 
 storage = MemoryStorage()
 bot = Bot(token=TOKEN)
