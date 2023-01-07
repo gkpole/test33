@@ -66,7 +66,7 @@ channel_us=sub_channel_url
 def no_sub():
     urlkb = InlineKeyboardMarkup(row_width=1)
     urlButton = InlineKeyboardButton(text='Welat VPN', url=channel_us)
-    urlButton = InlineKeyboardButton(text='Польз. соглашение', url="t.me/welat_vpn_agreement")
+    #urlButton = InlineKeyboardButton(text='Польз. соглашение', url="t.me/welat_vpn_agreement")
     urlkb.add(urlButton)
     return urlkb
 
