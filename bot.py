@@ -276,7 +276,7 @@ async def proc(message: types.Message, state: FSMContext):
                 id = a[0]
                 if id == 1:
                     cur = conn.cursor()
-                    cur.execute(f"UPDATE users SET block = 0 WHERE user_id = {message.text}")
+                    cur.execute(f"UPDATE users SET block = 0 WHERE user_id = = {message.text}")
                     conn.commit()
                     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
                     keyboard.add(types.InlineKeyboardButton(text="Рассылка"))
