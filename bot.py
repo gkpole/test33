@@ -267,7 +267,7 @@ async def handle_banned(msg: types.Message):
 async def handle_ban_command(msg: types.Message):
     # проверяем, что ID передан правильно
     try:
-        abuser_id = int(msg.get_args())
+        abuser_id = message.text
     except (ValueError, TypeError):
         return await msg.reply("Укажи ID пользователя.")
     
